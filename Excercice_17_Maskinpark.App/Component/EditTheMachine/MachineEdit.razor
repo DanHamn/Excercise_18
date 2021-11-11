@@ -1,0 +1,36 @@
+﻿@page "/machineedit"
+@page "/machineedit/{MachineId}"
+
+@if (!Saved)
+{
+    <section class="machine-edit">
+        <h1 class="page-title">Detaills for @Machine.Name</h1>
+        <EditForm Model="@Machine"
+                  OnValidSubmit="@HandleValidSubmit"
+                  OnInvalidSubmit="@HandleInvalidSubmit">
+            <div class="form-group row">
+                <label for="name" class="col-sm-3">Name: </label>
+                <InputText id="Name" class="form-control col-sm-8" @bind-Value="@Machine.Name" placeholder="Enter the Name for the machine"></InputText>
+            </div>
+            @*<div class="form-group row">
+                    <label for="onlineStatus" class="col-sm-3">onlineStatus: </label>
+                    <InputCheckbox id="Name" class="form-control col-sm-8" @bind-Value="@Machine.OnlineStatus" placeholder="Enter the online status for the machine"></InputCheckbox>
+                </div>*@
+            @if (!string.IsNullOrEmpty(MachineId))
+            {
+               <div class="form-group row">
+                    <label for="data" class="col-sm-3">Data: </label>
+                    <InputText id="Data" class="form-control col-sm-8" @bind-Value="@Machine.Data" placeholder="Enter the Data for the machine"></InputText>
+                </div>
+            }
+            <button type="submit" class="btn btn-primary edit-btn">Save machine</button>
+            <button class="btn btn-outline-primary" @onclick="@NavigateToMachinePark">Back to machine park</button>
+        </EditForm>
+    </section>
+}
+else
+{
+    <div class="alert @StatusClass">@Message</div>
+    <button class="btn btn-primary" @onclick="@NavigateToMachinePark">Back to machine park</button>
+    <button class="btn btn-outline-primary" @onclick="@RefreshPage">Refreash page</button>
+}

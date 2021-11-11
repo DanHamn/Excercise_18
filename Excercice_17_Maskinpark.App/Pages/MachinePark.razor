@@ -1,0 +1,80 @@
+﻿@using Excercice_17_Maskinpark.App.Component.Confirm
+@using Excercice_17_Maskinpark.App.Component.EditTheMachine
+@page "/machinepark"
+
+<h1 class="page-title">Maskin Park</h1>
+
+<div>
+    @foreach (var machine in Machines.ListOfMachines)
+    {
+        <div class="row col-6" style="border:solid">
+            <div class="col-4">
+                <table>
+                    <tr>
+                        <th>@machine.Name</th>
+                    </tr>
+                    <tr>
+                        <td>@machine.Id</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-4">
+                <table>
+                    <tr>
+                        <th>
+                            Status:
+                            @if (machine.OnlineStatus)
+                            {
+                                <div class="badge badge-success">Online</div>
+                            }
+                            else
+                            {
+                                <div class="badge badge-danger">Offline</div>
+                            }
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            Data:
+                            <div style="font-weight:normal"> @machine.Data</div>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-4">
+                <div class="dropdown">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                        Send Command
+                    </button>
+                    <div class="dropdown-menu">
+                        @if (machine.OnlineStatus)
+                        {
+                            <button class="dropdown-item" @onclick="()=> SwitchOnOffAsync(machine)">Turn Off</button>
+                        }
+                        else
+                        {
+                            <button class="dropdown-item" @onclick="()=> SwitchOnOffAsync(machine)">Turn On</button>
+                        }
+
+                        <a href="@($"machineedit/{machine.Id}")" class="dropdown-item">Edit the Machine</a>
+
+                            @*<button class="dropdown-item" @onclick="()=> EditName_Click(machine)">Change Name</button>*@
+
+                        <div class="dropdown-divider"></div>
+
+                        <button class="dropdown-item" @onclick="()=> Remove_Click(machine)">
+                            <span class="bg-danger text-white border-danger" style="border-style:solid">
+                                Remove the Machine
+                            </span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+</div>
+@*<MachineNameEdit @ref="EditNameDialog"></MachineNameEdit>*@
+
+<Confirm @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click" ConfirmationMessage=@($"Are you sure you want to remove the machine?") ConfirmationButtonText="Yes, remove the machine"></Confirm>
